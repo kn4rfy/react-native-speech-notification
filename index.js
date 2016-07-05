@@ -11,7 +11,7 @@
 'use strict';
 
 var { DeviceEventEmitter, NativeModules } = require('react-native');
-const RNSpeechNotification = NativeModules.RCTSpeechNotification;
+const RNSpeechNotification = NativeModules.SpeechNotification;
 
 var SpeechNotification = {
   speak: function(params, onfulfilled, onrejected) {
@@ -39,4 +39,4 @@ var SpeechNotification = {
   }
 };
 
-module.exports = RCTSpeechNotification;
+module.exports = SpeechNotification;

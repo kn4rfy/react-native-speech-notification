@@ -33,7 +33,7 @@ RCT_EXPORT_METHOD(speechSynthesizer:(AVSpeechSynthesizer*)synthesizer didFinishS
   [[AVAudioSession sharedInstance] setActive:YES withOptions: 0 error:nil];
 }
 
-RCT_EXPORT_METHOD(speak:(NSDictionary *command 
+RCT_EXPORT_METHOD(speak:(NSDictionary *)command)
 {
   [self.commandDelegate runInBackground:^{
     if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){

@@ -7,7 +7,6 @@
 //
 
 #import "RCTBridgeModule.h"
-#import "SpeechNotification.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioServices.h>
 
