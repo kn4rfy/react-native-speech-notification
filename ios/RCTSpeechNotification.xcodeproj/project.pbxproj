@@ -1,0 +1,256 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3B128DD51D2BC46C008D9282 /* RCTSpeechNotification.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3B128DD41D2BC46C008D9282 /* RCTSpeechNotification.h */; };
+		3B128DD71D2BC46C008D9282 /* RCTSpeechNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B128DD61D2BC46C008D9282 /* RCTSpeechNotification.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3B128DCF1D2BC46C008D9282 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				3B128DD51D2BC46C008D9282 /* RCTSpeechNotification.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		3B128DD11D2BC46C008D9282 /* libRCTSpeechNotification.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRCTSpeechNotification.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B128DD41D2BC46C008D9282 /* RCTSpeechNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTSpeechNotification.h; sourceTree = "<group>"; };
+		3B128DD61D2BC46C008D9282 /* RCTSpeechNotification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTSpeechNotification.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3B128DCE1D2BC46C008D9282 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3B128DC81D2BC46C008D9282 = {
+			isa = PBXGroup;
+			children = (
+				3B128DD31D2BC46C008D9282 /* RCTSpeechNotification */,
+				3B128DD21D2BC46C008D9282 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3B128DD21D2BC46C008D9282 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3B128DD11D2BC46C008D9282 /* libRCTSpeechNotification.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3B128DD31D2BC46C008D9282 /* RCTSpeechNotification */ = {
+			isa = PBXGroup;
+			children = (
+				3B128DD41D2BC46C008D9282 /* RCTSpeechNotification.h */,
+				3B128DD61D2BC46C008D9282 /* RCTSpeechNotification.m */,
+			);
+			path = RCTSpeechNotification;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3B128DD01D2BC46C008D9282 /* RCTSpeechNotification */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3B128DDA1D2BC46C008D9282 /* Build configuration list for PBXNativeTarget "RCTSpeechNotification" */;
+			buildPhases = (
+				3B128DCD1D2BC46C008D9282 /* Sources */,
+				3B128DCE1D2BC46C008D9282 /* Frameworks */,
+				3B128DCF1D2BC46C008D9282 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RCTSpeechNotification;
+			productName = RCTSpeechNotification;
+			productReference = 3B128DD11D2BC46C008D9282 /* libRCTSpeechNotification.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3B128DC91D2BC46C008D9282 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Francis Knarfy Elopre";
+				TargetAttributes = {
+					3B128DD01D2BC46C008D9282 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = K8B59AV23V;
+					};
+				};
+			};
+			buildConfigurationList = 3B128DCC1D2BC46C008D9282 /* Build configuration list for PBXProject "RCTSpeechNotification" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 3B128DC81D2BC46C008D9282;
+			productRefGroup = 3B128DD21D2BC46C008D9282 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3B128DD01D2BC46C008D9282 /* RCTSpeechNotification */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3B128DCD1D2BC46C008D9282 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B128DD71D2BC46C008D9282 /* RCTSpeechNotification.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		3B128DD81D2BC46C008D9282 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		3B128DD91D2BC46C008D9282 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3B128DDB1D2BC46C008D9282 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		3B128DDC1D2BC46C008D9282 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3B128DCC1D2BC46C008D9282 /* Build configuration list for PBXProject "RCTSpeechNotification" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B128DD81D2BC46C008D9282 /* Debug */,
+				3B128DD91D2BC46C008D9282 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3B128DDA1D2BC46C008D9282 /* Build configuration list for PBXNativeTarget "RCTSpeechNotification" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B128DDB1D2BC46C008D9282 /* Debug */,
+				3B128DDC1D2BC46C008D9282 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3B128DC91D2BC46C008D9282 /* Project object */;
+}

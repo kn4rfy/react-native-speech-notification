@@ -1,0 +1,30 @@
+{
+  "name": "react-native-speech-notification",
+  "version": "0.0.1",
+  "description": "React Native Speech Notification Module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kn4rfy/react-native-speech-notification.git"
+  },
+  "keywords": [
+    "tts",
+    "text-to-speech",
+    "notifications",
+    "local-notifications",
+    "react",
+    "react-native",
+    "react-component",
+    "android",
+    "ios"
+  ],
+  "author": "FRANCIS KNARFY ELOPRE",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kn4rfy/react-native-speech-notification/issues"
+  },
+  "homepage": "https://github.com/kn4rfy/react-native-speech-notification#readme"
+}
