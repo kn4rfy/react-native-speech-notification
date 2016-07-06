@@ -14,16 +14,8 @@ var { DeviceEventEmitter, NativeModules } = require('react-native');
 const RNSpeechNotification = NativeModules.SpeechNotification;
 
 var SpeechNotification = {
-  speak: function(params, onfulfilled, onrejected) {
-    var options = {};
-
-    if (typeof params == 'string') {
-      options.params = params;
-    } else {
-      options = params;
-    }
-
-    RNSpeechNotification.speak(onfulfilled, onrejected, [options]);
+  speak: function(params) {
+    RNSpeechNotification.speak(params);
   }
 };
 
