@@ -10,71 +10,70 @@
 
 @implementation SpeechNotificationDelegate
 
-- (void)pluginInitialize {
-  synthesizer = [AVSpeechSynthesizer new];
-  synthesizer.delegate = self;
+-(instancetype)init
+{
+  self = [super init];
+  if (self) {
+    synthesizer = [AVSpeechSynthesizer new];
+    synthesizer.delegate = self;
+  }
+
+  return self;
 }
 
-- (void)speechSynthesizer:(AVSpeechSynthesizer*)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance*)utterance {
-// TODO: Return result
-//  CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-//  if (lastCallbackId) {
-//    [self.commandDelegate sendPluginResult:result callbackId:lastCallbackId];
-//    lastCallbackId = nil;
-//  } else {
-//    [self.commandDelegate sendPluginResult:result callbackId:callbackId];
-//    callbackId = nil;
-//  }
+- (void)speechSynthesizer:(AVSpeechSynthesizer*)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance*)utterance
+{
+  // TODO: Return result
+  //  CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  //  if (lastCallbackId) {
+  //    [self.commandDelegate sendPluginResult:result callbackId:lastCallbackId];
+  //    lastCallbackId = nil;
+  //  } else {
+  //    [self.commandDelegate sendPluginResult:result callbackId:callbackId];
+  //    callbackId = nil;
+  //  }
 
   [[AVAudioSession sharedInstance] setActive:NO withOptions:0 error:nil];
   [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback
-    withOptions: 0 error: nil];
+  withOptions: 0 error: nil];
   [[AVAudioSession sharedInstance] setActive:YES withOptions: 0 error:nil];
 }
 
-- (void)speak:(NSDictionary*)command {
-   if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
-      [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
-    }
+- (void)speak:(NSDictionary*)params
+{
+  if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
+    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+  }
 
-    [[AVAudioSession sharedInstance] setActive:NO withOptions:0 error:nil];
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback
-      withOptions:AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers error:nil];
+  [[AVAudioSession sharedInstance] setActive:NO withOptions:0 error:nil];
+  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback
+  withOptions:AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers error:nil];
 
-    if (callbackId) {
-      lastCallbackId = callbackId;
-    }
+  [synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryWord];
 
-//    callbackId = command.callbackId;
+  NSString *message = [params objectForKey:@"message"];
+  NSString *language = [params objectForKey:@"language"];
 
-    [synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryWord];
+  if (!language || (id)language == [NSNull null]) {
+    language = @"en-US";
+  }
 
-//    NSDictionary *options = [command.arguments objectAtIndex:0];
-    NSDictionary *options = command;
+  UIApplicationState state = [[UIApplication sharedApplication] applicationState];
 
-    NSString *message = [options objectForKey:@"message"];
-    NSString *language = [options objectForKey:@"language"];
+  UILocalNotification *notification = [[UILocalNotification alloc]init];
+  [notification setAlertBody:message];
 
-    if (!language || (id)language == [NSNull null]) {
-      language = @"en-US";
-    }
+  AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:message];
+  [utterance setVoice:[AVSpeechSynthesisVoice voiceWithLanguage:language]];
 
-    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
-
-    UILocalNotification *notification = [[UILocalNotification alloc]init];
-    [notification setAlertBody:message];
-
-    AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:message];
-    [utterance setVoice:[AVSpeechSynthesisVoice voiceWithLanguage:language]];
-
-    if (state == UIApplicationStateActive) {
-      [synthesizer speakUtterance:utterance];
-    }
-    else{
-      AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-      [[UIApplication sharedApplication] setScheduledLocalNotifications:[NSArray arrayWithObject:notification]];
-      [synthesizer speakUtterance:utterance];
-    }
+  if (state == UIApplicationStateActive) {
+    [synthesizer speakUtterance:utterance];
+  }
+  else{
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    [[UIApplication sharedApplication] setScheduledLocalNotifications:[NSArray arrayWithObject:notification]];
+    [synthesizer speakUtterance:utterance];
+  }
 }
 
 @end

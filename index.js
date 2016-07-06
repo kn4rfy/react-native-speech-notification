@@ -15,15 +15,15 @@ const RNSpeechNotification = NativeModules.SpeechNotification;
 
 var SpeechNotification = {
   speak: function(params, onfulfilled, onrejected) {
-      var options = {};
+    var options = {};
 
-      if (typeof params == 'string') {
-          options.params = params;
-      } else {
-          options = params;
-      }
+    if (typeof params == 'string') {
+      options.params = params;
+    } else {
+      options = params;
+    }
 
-      RNSpeechNotification.speak(successFn, errorFn, [options]);
+    RNSpeechNotification.speak(onfulfilled, onrejected, [options]);
   }
 };
 

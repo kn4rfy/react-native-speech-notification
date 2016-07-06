@@ -10,11 +10,10 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioServices.h>
 
-@interface SpeechNotificationDelegate : NSObject <AVSpeechSynthesizerDelegate> {
+@interface SpeechNotificationDelegate : NSObject <AVSpeechSynthesizerDelegate>
+{
   AVSpeechSynthesizer* synthesizer;
-  NSString* lastCallbackId;
-  NSString* callbackId;
 }
 
-- (void)speak:(NSDictionary*)command;
+- (void)speak:(NSDictionary*)params;
 @end

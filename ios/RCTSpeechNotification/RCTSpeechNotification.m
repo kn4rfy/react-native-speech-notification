@@ -10,6 +10,7 @@
 #import "RCTLog.h"
 #import "RCTBridge.h"
 #import "RCTEventDispatcher.h"
+#import "RCTConvert.h"
 
 @implementation RCTSpeechNotification
 
@@ -21,21 +22,20 @@ RCT_EXPORT_MODULE();
 
 -(instancetype)init
 {
-    self = [super init];
-    if (self) {
-        speechDelegate = [[SpeechNotificationDelegate alloc] init];
-    }
-    
-    return self;
+  self = [super init];
+  if (self) {
+    speechDelegate = [[SpeechNotificationDelegate alloc] init];
+  }
+
+  return self;
 }
 
-RCT_EXPORT_METHOD(speak:(NSDictionary *)command)
+RCT_EXPORT_METHOD(speak:(NSDictionary *)params)
 {
-    RCTLogInfo(@"RCTSpeechNotification #speak");
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [speechDelegate speak:command];
-        //success(@[[NSNull null]]);
-    });
+  RCTLogInfo(@"RCTSpeechNotification #speak");
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    [speechDelegate speak:params];
+  });
 }
 
 @end
