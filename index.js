@@ -23,19 +23,7 @@ var SpeechNotification = {
           options = params;
       }
 
-      RCTSpeechNotification.speak(successFn, errorFn, [options]);
-  },
-
-  notify: function(params, onfulfilled, onrejected) {
-      var options = {};
-
-      if (typeof params == 'string') {
-          options.params = params;
-      } else {
-          options = params;
-      }
-
-      RCTSpeechNotification.notify(successFn, errorFn, [options]);
+      RNSpeechNotification.speak(successFn, errorFn, [options]);
   }
 };
 
