@@ -28,7 +28,7 @@
   [[AVAudioSession sharedInstance] setActive:YES withOptions: 0 error:nil];
 }
 
-- (void)speak:(NSDictionary*)params
+- (void)speak:(NSDictionary*)args
 {
   if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
     [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
@@ -39,8 +39,8 @@
 
   [synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryWord];
 
-  NSString *message = [params objectForKey:@"message"];
-  NSString *language = [params objectForKey:@"language"];
+  NSString *message = [args objectForKey:@"message"];
+  NSString *language = [args objectForKey:@"language"];
 
   if (!language || (id)language == [NSNull null]) {
     language = @"en-US";

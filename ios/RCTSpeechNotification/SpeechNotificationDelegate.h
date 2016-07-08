@@ -15,6 +15,6 @@
   AVSpeechSynthesizer* synthesizer;
 }
 
-- (void)speak:(NSDictionary*)params;
+- (void)speak:(NSDictionary*)args;
 
 @end

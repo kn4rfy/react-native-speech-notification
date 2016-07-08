@@ -8,13 +8,9 @@
 
 #import "RCTSpeechNotification.h"
 #import "RCTLog.h"
-#import "RCTBridge.h"
-#import "RCTEventDispatcher.h"
-#import "RCTConvert.h"
 
 @implementation RCTSpeechNotification
 
-@synthesize bridge = _bridge;
 @synthesize speechNotificationDelegate;
 
 RCT_EXPORT_MODULE();
@@ -29,11 +25,11 @@ RCT_EXPORT_MODULE();
   return self;
 }
 
-RCT_EXPORT_METHOD(speak:(NSDictionary *)params)
+RCT_EXPORT_METHOD(speak:(NSDictionary *)args)
 {
   RCTLogInfo(@"RCTSpeechNotification #speak");
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    [speechNotificationDelegate speak:params];
+    [speechNotificationDelegate speak:args];
   });
 }
 
