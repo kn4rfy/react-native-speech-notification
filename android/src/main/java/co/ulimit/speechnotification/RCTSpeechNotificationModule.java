@@ -18,6 +18,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.v4.app.NotificationCompat;
 
 import com.facebook.common.logging.FLog;
+import com.facebook.react.bridge.GuardedAsyncTask;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -77,7 +78,7 @@ public class RCTSpeechNotificationModule extends ReactContextBaseJavaModule impl
     // Activity `onDestroy`
   }
 
-  int getResIdForDrawable(String clsName, String resPath) {
+  final int getResIdForDrawable(String clsName, String resPath) {
     String drawable = this.getBaseName(resPath);
     int resId = 0;
 
@@ -106,73 +107,78 @@ public class RCTSpeechNotificationModule extends ReactContextBaseJavaModule impl
 
   @ReactMethod
   @SuppressWarnings("deprecation")
-  public void speak(ReadableMap params) throws JSONException, NullPointerException {
-    String title;
-    String message;
-    String language;
+  public void speak(final ReadableMap args) throws JSONException, NullPointerException {
+    new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
+      @Override
+      protected void doInBackgroundGuarded(Void... params) {
+        String title;
+        String message;
+        String language;
 
-    if (!isTextToSpeechInitialized) {
-      FLog.e(ReactConstants.TAG,"Text-to-Speech is not initialized");
-      return;
-    }
+        if (!isTextToSpeechInitialized) {
+          FLog.e(ReactConstants.TAG, "Text-to-Speech is not initialized");
+          return;
+        }
 
-    if (params == null) {
-      FLog.e(ReactConstants.TAG,"Speak parameters must not be null");
-      return;
-    }
+        if (args == null) {
+          FLog.e(ReactConstants.TAG, "Speak parameters must not be null");
+          return;
+        }
 
-    if (params.isNull("title")) {
-      FLog.e(ReactConstants.TAG,"Parameter 'title' must not be null");
-      return;
-    } else {
-      title = params.getString("title");
-    }
+        if (args.isNull("title")) {
+          FLog.e(ReactConstants.TAG, "Parameter 'title' must not be null");
+          return;
+        } else {
+          title = args.getString("title");
+        }
 
-    if (params.isNull("message")) {
-      FLog.e(ReactConstants.TAG,"Parameter 'message' must not be null");
-      return;
-    } else {
-      message = params.getString("message");
-    }
+        if (args.isNull("message")) {
+          FLog.e(ReactConstants.TAG, "Parameter 'message' must not be null");
+          return;
+        } else {
+          message = args.getString("message");
+        }
 
-    if (params.isNull("language")) {
-      language = "en-US";
-    } else if (params.getString("language").equals("en")) {
-      language = "en-US";
-    } else {
-      language = params.getString("language");
-    }
+        if (args.isNull("language")) {
+          language = "en-US";
+        } else if (args.getString("language").equals("en")) {
+          language = "en-US";
+        } else {
+          language = args.getString("language");
+        }
 
-    final Intent emptyIntent = new Intent();
-    Context context = getReactApplicationContext();
-    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        final Intent emptyIntent = new Intent();
+        Context context = getReactApplicationContext();
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-    Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
-    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-      .setSmallIcon(this.getResIdForDrawable(context.getPackageName(), params.getString("icon")))
-      .setContentTitle(title)
-      .setContentText(message)
-      .setContentIntent(pendingIntent);
-    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+                .setSmallIcon(getResIdForDrawable(context.getPackageName(), args.getString("icon")))
+                .setContentTitle(title)
+                .setContentText(message)
+                .setContentIntent(pendingIntent);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-    String[] languageArgs = language.split("-");
-    textToSpeech.setLanguage(new Locale(languageArgs[0], languageArgs[1]));
+        String[] languageArgs = language.split("-");
+        textToSpeech.setLanguage(new Locale(languageArgs[0], languageArgs[1]));
 
-    if (isVisible) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
-      } else {
-        textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null);
+        if (isVisible) {
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
+          } else {
+            textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null);
+          }
+        } else {
+          vibrator.vibrate(250);
+          notificationManager.notify(0, notificationBuilder.build());
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
+          } else {
+            textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null);
+          }
+        }
       }
-    } else {
-      vibrator.vibrate(250);
-      notificationManager.notify(0, notificationBuilder.build());
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
-      } else {
-        textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null);
-      }
-    }
+    }.execute();
   }
 }
