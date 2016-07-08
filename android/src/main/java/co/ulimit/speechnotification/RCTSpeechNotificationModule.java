@@ -1,3 +1,11 @@
+//
+//  RCTSpeechNotificationModule.java
+//  RCTSpeechNotificationModule
+//
+//  Created by Francis Knarfy Elopre on 05/08/2016.
+//  Copyright © 2016 Francis Knarfy Elopre. All rights reserved.
+//
+
 package co.ulimit.speechnotification;
 
 import android.app.NotificationManager;
@@ -7,107 +15,67 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
-import android.speech.tts.UtteranceProgressListener;
 import android.support.v4.app.NotificationCompat;
 
+import com.facebook.common.logging.FLog;
+import com.facebook.react.bridge.LifecycleEventListener;
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.common.ReactConstants;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Locale;
 
-/**
- * Created by kn4rfy on 07/07/2016.
- */
-
-public class RCTSpeechNotificationModule extends ReactContextBaseJavaModule implements OnInitListener {
-
-    public static final String ERR_INVALID_OPTIONS = "ERR_INVALID_OPTIONS";
-    public static final String ERR_NOT_INITIALIZED = "ERR_NOT_INITIALIZED";
-    public static final String ERR_ERROR_INITIALIZING = "ERR_ERROR_INITIALIZING";
-    public static final String ERR_UNKNOWN = "ERR_UNKNOWN";
-
+public class RCTSpeechNotificationModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
+    protected static boolean textToSpeechIsInitialized = false;
     protected static boolean isVisible = false;
+    private static TextToSpeech textToSpeech;
 
-    boolean ttsInitialized = false;
-    TextToSpeech speech = null;
-
-    @Override
-    public void initialize(CordovaInterface cordova, final CordovaWebView webView) {
-        speech = new TextToSpeech(cordova.getActivity().getApplicationContext(), this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            speech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-                @Override
-                public void onStart(String s) {
-                    // do nothing
-                }
-
-                @Override
-                public void onDone(String callbackId) {
-                    if (!callbackId.equals("")) {
-                        CallbackContext context = new CallbackContext(callbackId, webView);
-                        context.success();
-                    }
-                }
-
-                @Override
-                public void onError(String callbackId) {
-                    if (!callbackId.equals("")) {
-                        CallbackContext context = new CallbackContext(callbackId, webView);
-                        context.error(ERR_UNKNOWN);
-                    }
-                }
-            });
-        }
+    public RCTSpeechNotificationModule(ReactApplicationContext reactContext) {
+        super(reactContext);
+        getReactApplicationContext().addLifecycleEventListener(this);
+        initialize();
     }
 
     @Override
-    public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
-        if (action.equals("speak")) {
-            cordova.getThreadPool().execute(new Runnable() {
-                public void run() {
-                    try {
-                        speak(args, callbackContext);
-                    } catch (JSONException ignore) {}
-                }
-            });
-            return true;
-        }
-        return false;
+    public String getName() {
+        return "SpeechNotification";
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onInit(int status) {
-        if (status != TextToSpeech.SUCCESS) {
-            speech = null;
-        } else {
-            HashMap<String, String> ttsParams = new HashMap<String, String>();
-            ttsParams.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "");
-            speech.setLanguage(new Locale("en", "US"));
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                speech.speak("", TextToSpeech.QUEUE_FLUSH, null, "");
-            } else {
-                speech.speak("", TextToSpeech.QUEUE_FLUSH, ttsParams);
+    public void initialize() {
+        textToSpeech = new TextToSpeech(getReactApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.SUCCESS) {
+                    FLog.e(ReactConstants.TAG,"Not able to initialize the Text-to-Speech object");
+                    textToSpeechIsInitialized = false;
+                } else {
+                    FLog.v(ReactConstants.TAG,"Text-to-Speech initialized");
+                    textToSpeechIsInitialized = true;
+                }
             }
-
-            ttsInitialized = true;
-        }
+        });
     }
 
-    public void onHostResume()
-    {
+    @Override
+    public void onHostResume() {
         isVisible = true;
     }
 
-    public void onHostPause()
-    {
+    @Override
+    public void onHostPause() {
         isVisible = false;
+    }
+
+    @Override
+    public void onHostDestroy() {
+        // Actvity `onDestroy`
     }
 
     int getResIdForDrawable(String clsName, String resPath) {
@@ -137,28 +105,32 @@ public class RCTSpeechNotificationModule extends ReactContextBaseJavaModule impl
         return drawable;
     }
 
+    @ReactMethod
     @SuppressWarnings("deprecation")
-    private void speak(final JSONArray args, final CallbackContext callbackContext) throws JSONException, NullPointerException {
-        JSONObject params = args.getJSONObject(0);
-
-        if (params == null) {
-            callbackContext.error(ERR_INVALID_OPTIONS);
-            return;
-        }
-
+    public void speak(ReadableMap params) throws JSONException, NullPointerException {
         String title;
         String message;
         String language;
 
+        if (!textToSpeechIsInitialized) {
+            FLog.e(ReactConstants.TAG,"Text-to-Speech is not initialized");
+            return;
+        }
+
+        if (params == null) {
+            FLog.e(ReactConstants.TAG,"Speak parameters must not be null");
+            return;
+        }
+
         if (params.isNull("title")) {
-            callbackContext.error(ERR_INVALID_OPTIONS);
+            FLog.e(ReactConstants.TAG,"Parameter 'title' must not be null");
             return;
         } else {
             title = params.getString("title");
         }
 
         if (params.isNull("message")) {
-            callbackContext.error(ERR_INVALID_OPTIONS);
+            FLog.e(ReactConstants.TAG,"Parameter 'message' must not be null");
             return;
         } else {
             message = params.getString("message");
@@ -166,25 +138,14 @@ public class RCTSpeechNotificationModule extends ReactContextBaseJavaModule impl
 
         if (params.isNull("language")) {
             language = "en-US";
-        }
-        else if (params.getString("language").equals("en")) {
+        } else if (params.getString("language").equals("en")) {
             language = "en-US";
         } else {
             language = params.getString("language");
         }
 
-        if (speech == null) {
-            callbackContext.error(ERR_ERROR_INITIALIZING);
-            return;
-        }
-
-        if (!ttsInitialized) {
-            callbackContext.error(ERR_NOT_INITIALIZED);
-            return;
-        }
-
         final Intent emptyIntent = new Intent();
-        Context context = this.cordova.getActivity().getApplicationContext();
+        Context context = getReactApplicationContext();
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Vibrator vibrate = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
@@ -196,26 +157,25 @@ public class RCTSpeechNotificationModule extends ReactContextBaseJavaModule impl
                 .setContentIntent(pendingIntent);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        HashMap<String, String> ttsParams = new HashMap<String, String>();
-        ttsParams.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, callbackContext.getCallbackId());
+        HashMap<String, String> ttsParams = new HashMap<>();
+        ttsParams.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, null);
 
-        String[] localeArgs = language.split("-");
-        speech.setLanguage(new Locale(localeArgs[0], localeArgs[1]));
+        String[] languageArgs = language.split("-");
+        textToSpeech.setLanguage(new Locale(languageArgs[0], languageArgs[1]));
 
         if (isVisible) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                speech.speak(message, TextToSpeech.QUEUE_FLUSH, null, callbackContext.getCallbackId());
+                textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
             } else {
-                speech.speak(message, TextToSpeech.QUEUE_FLUSH, ttsParams);
+                textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, ttsParams);
             }
-        }
-        else{
+        } else {
             vibrate.vibrate(250);
             notificationManager.notify(0, mBuilder.build());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                speech.speak(message, TextToSpeech.QUEUE_FLUSH, null, callbackContext.getCallbackId());
+                textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
             } else {
-                speech.speak(message, TextToSpeech.QUEUE_FLUSH, ttsParams);
+                textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, ttsParams);
             }
         }
     }
