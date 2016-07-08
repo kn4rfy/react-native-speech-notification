@@ -23,31 +23,19 @@
 
 - (void)speechSynthesizer:(AVSpeechSynthesizer*)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance*)utterance
 {
-  // TODO: Return result
-  //  CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-  //  if (lastCallbackId) {
-  //    [self.commandDelegate sendPluginResult:result callbackId:lastCallbackId];
-  //    lastCallbackId = nil;
-  //  } else {
-  //    [self.commandDelegate sendPluginResult:result callbackId:callbackId];
-  //    callbackId = nil;
-  //  }
-
   [[AVAudioSession sharedInstance] setActive:NO withOptions:0 error:nil];
-  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback
-  withOptions: 0 error: nil];
+  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions: 0 error: nil];
   [[AVAudioSession sharedInstance] setActive:YES withOptions: 0 error:nil];
 }
 
 - (void)speak:(NSDictionary*)params
 {
-  if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
+  if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
     [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
   }
 
   [[AVAudioSession sharedInstance] setActive:NO withOptions:0 error:nil];
-  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback
-  withOptions:AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers error:nil];
+  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers error:nil];
 
   [synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryWord];
 
@@ -58,7 +46,7 @@
     language = @"en-US";
   }
 
-  UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+  UIApplicationState applicationState = [[UIApplication sharedApplication] applicationState];
 
   UILocalNotification *notification = [[UILocalNotification alloc]init];
   [notification setAlertBody:message];
@@ -66,7 +54,7 @@
   AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:message];
   [utterance setVoice:[AVSpeechSynthesisVoice voiceWithLanguage:language]];
 
-  if (state == UIApplicationStateActive) {
+  if (applicationState == UIApplicationStateActive) {
     [synthesizer speakUtterance:utterance];
   }
   else{

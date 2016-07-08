@@ -6,12 +6,11 @@
 //  Copyright © 2016 Francis Knarfy Elopre. All rights reserved.
 //
 
-
 #import "RCTBridgeModule.h"
 #import "SpeechNotificationDelegate.h"
 
 @interface RCTSpeechNotification : NSObject <RCTBridgeModule>
 
-@property (nonatomic, strong) SpeechNotificationDelegate* speechDelegate;
+@property (nonatomic, strong) SpeechNotificationDelegate* speechNotificationDelegate;
 
 @end

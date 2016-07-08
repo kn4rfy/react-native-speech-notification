@@ -15,16 +15,15 @@
 @implementation RCTSpeechNotification
 
 @synthesize bridge = _bridge;
-@synthesize speechDelegate;
+@synthesize speechNotificationDelegate;
 
 RCT_EXPORT_MODULE();
-
 
 -(instancetype)init
 {
   self = [super init];
   if (self) {
-    speechDelegate = [[SpeechNotificationDelegate alloc] init];
+    speechNotificationDelegate = [[SpeechNotificationDelegate alloc] init];
   }
 
   return self;
@@ -34,7 +33,7 @@ RCT_EXPORT_METHOD(speak:(NSDictionary *)params)
 {
   RCTLogInfo(@"RCTSpeechNotification #speak");
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    [speechDelegate speak:params];
+    [speechNotificationDelegate speak:params];
   });
 }
 
