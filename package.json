@@ -1,6 +1,6 @@
 {
   "name": "react-native-speech-notification",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "React Native Speech Notification Module",
   "main": "index.js",
   "scripts": {
