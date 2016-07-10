@@ -17,4 +17,6 @@
 
 - (void)speak:(NSDictionary*)args;
 
+- (void)notify:(NSDictionary*)args;
+
 @end

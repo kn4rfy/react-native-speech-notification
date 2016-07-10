@@ -33,4 +33,12 @@ RCT_EXPORT_METHOD(speak:(NSDictionary *)args)
   });
 }
 
+RCT_EXPORT_METHOD(notify:(NSDictionary *)args)
+{
+  RCTLogInfo(@"RCTSpeechNotification #notify");
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    [speechNotificationDelegate notify:args];
+  });
+}
+
 @end

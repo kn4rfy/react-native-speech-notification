@@ -125,6 +125,53 @@ public class RCTSpeechNotificationModule extends ReactContextBaseJavaModule impl
           return;
         }
 
+        if (args.isNull("message")) {
+          FLog.e(ReactConstants.TAG, "Parameter 'message' must not be null");
+          return;
+        } else {
+          message = args.getString("message");
+        }
+
+        if (args.isNull("language")) {
+          language = "en-US";
+        } else if (args.getString("language").equals("en")) {
+          language = "en-US";
+        } else {
+          language = args.getString("language");
+        }
+
+        String[] languageArgs = language.split("-");
+        textToSpeech.setLanguage(new Locale(languageArgs[0], languageArgs[1]));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
+        } else {
+          textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null);
+        }
+      }
+    }.execute();
+  }
+
+  @ReactMethod
+  @SuppressWarnings("deprecation")
+  public void notify(final ReadableMap args) throws JSONException, NullPointerException {
+    new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
+      @Override
+      protected void doInBackgroundGuarded(Void... params) {
+        String title;
+        String message;
+        String language;
+
+        if (!isTextToSpeechInitialized) {
+          FLog.e(ReactConstants.TAG, "Text-to-Speech is not initialized");
+          return;
+        }
+
+        if (args == null) {
+          FLog.e(ReactConstants.TAG, "Speak parameters must not be null");
+          return;
+        }
+
         if (args.isNull("title")) {
           FLog.e(ReactConstants.TAG, "Parameter 'title' must not be null");
           return;
@@ -154,22 +201,22 @@ public class RCTSpeechNotificationModule extends ReactContextBaseJavaModule impl
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(getResIdForDrawable(context.getPackageName(), args.getString("icon")))
-                .setContentTitle(title)
-                .setContentText(message)
-                .setContentIntent(pendingIntent);
+          .setSmallIcon(getResIdForDrawable(context.getPackageName(), args.getString("icon")))
+          .setContentTitle(title)
+          .setContentText(message)
+          .setContentIntent(pendingIntent);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         String[] languageArgs = language.split("-");
         textToSpeech.setLanguage(new Locale(languageArgs[0], languageArgs[1]));
 
-        if (isVisible) {
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
-          } else {
-            textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null);
-          }
-        } else {
+        // if (isVisible) {
+        //   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        //     textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
+        //   } else {
+        //     textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null);
+        //   }
+        // } else {
           vibrator.vibrate(250);
           notificationManager.notify(0, notificationBuilder.build());
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -177,7 +224,7 @@ public class RCTSpeechNotificationModule extends ReactContextBaseJavaModule impl
           } else {
             textToSpeech.speak(message, TextToSpeech.QUEUE_FLUSH, null);
           }
-        }
+        // }
       }
     }.execute();
   }

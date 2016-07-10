@@ -16,6 +16,9 @@ const RNSpeechNotification = NativeModules.SpeechNotification;
 var SpeechNotification = {
   speak: function(params) {
     RNSpeechNotification.speak(params);
+  },
+  notify: function(params) {
+    RNSpeechNotification.notify(params);
   }
 };
 

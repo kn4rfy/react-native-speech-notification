@@ -46,7 +46,30 @@
     language = @"en-US";
   }
 
-  UIApplicationState applicationState = [[UIApplication sharedApplication] applicationState];
+  AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:message];
+  [utterance setVoice:[AVSpeechSynthesisVoice voiceWithLanguage:language]];
+  [synthesizer speakUtterance:utterance];
+}
+
+- (void)notify:(NSDictionary*)args
+{
+  if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
+    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+  }
+
+  [[AVAudioSession sharedInstance] setActive:NO withOptions:0 error:nil];
+  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers error:nil];
+
+  [synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryWord];
+
+  NSString *message = [args objectForKey:@"message"];
+  NSString *language = [args objectForKey:@"language"];
+
+  if (!language || (id)language == [NSNull null]) {
+    language = @"en-US";
+  }
+
+  // UIApplicationState applicationState = [[UIApplication sharedApplication] applicationState];
 
   UILocalNotification *notification = [[UILocalNotification alloc]init];
   [notification setAlertBody:message];
@@ -54,14 +77,14 @@
   AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:message];
   [utterance setVoice:[AVSpeechSynthesisVoice voiceWithLanguage:language]];
 
-  if (applicationState == UIApplicationStateActive) {
-    [synthesizer speakUtterance:utterance];
-  }
-  else{
+  // if (applicationState == UIApplicationStateActive) {
+  //   [synthesizer speakUtterance:utterance];
+  // }
+  // else{
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     [[UIApplication sharedApplication] setScheduledLocalNotifications:[NSArray arrayWithObject:notification]];
     [synthesizer speakUtterance:utterance];
-  }
+  // }
 }
 
 @end
