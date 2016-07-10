@@ -5,12 +5,12 @@ React Native Speech Notification is Text-to-Speech as a notification library for
 
 ##Documentation
 
--[Installation](https://github.com/kn4rfy/react-native-speech-notification#installation)
-..-[Automatic Linking](https://github.com/kn4rfy/react-native-speech-notification#automatic-linking)
-..-[Manual Linking](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#manual-linking)
--[Usage](https://github.com/kn4rfy/react-native-speech-notification#usage)
--[About](https://github.com/kn4rfy/react-native-speech-notification#about)
--[License](https://github.com/kn4rfy/react-native-speech-notification#license)
+- [Installation](https://github.com/kn4rfy/react-native-speech-notification#installation)
+  - [Automatic Linking](https://github.com/kn4rfy/react-native-speech-notification#automatic-linking)
+  - [Manual Linking](https://facebook.github.io/react-native/docs/linking-libraries-ios.html#manual-linking)
+- [Usage](https://github.com/kn4rfy/react-native-speech-notification#usage)
+- [About](https://github.com/kn4rfy/react-native-speech-notification#about)
+- [License](https://github.com/kn4rfy/react-native-speech-notification#license)
 
 
 
