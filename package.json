@@ -1,7 +1,7 @@
 {
   "name": "react-native-speech-notification",
   "version": "0.1.0",
-  "description": "React Native Speech Notification Module",
+  "description": "A React Native Text-to-Speech library for Android and iOS with an option for Text-to-Speech as a Notification sound",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
