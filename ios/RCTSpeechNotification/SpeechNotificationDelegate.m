@@ -30,10 +30,6 @@
 
 - (void)speak:(NSDictionary*)args
 {
-  if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
-    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
-  }
-
   [[AVAudioSession sharedInstance] setActive:NO withOptions:0 error:nil];
   [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers error:nil];
 
