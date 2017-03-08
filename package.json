@@ -1,6 +1,6 @@
 {
   "name": "react-native-speech-notification",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A React Native Text-to-Speech library for Android and iOS with an option for Text-to-Speech as a Notification sound",
   "main": "index.js",
   "scripts": {
