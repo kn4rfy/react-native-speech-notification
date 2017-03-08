@@ -6,7 +6,7 @@
 //  Copyright © 2016 Francis Knarfy Elopre. All rights reserved.
 //
 
-#import "RCTBridgeModule.h"
+#import <React/RCTBridgeModule.h>
 #import "SpeechNotificationDelegate.h"
 
 @interface RCTSpeechNotification : NSObject <RCTBridgeModule>
