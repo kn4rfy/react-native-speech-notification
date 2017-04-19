@@ -24,17 +24,9 @@ Note: --save or --save-dev flag is very important for this step. rnpm will link 
 
 ### Automatic linking
 ### Step 2
-"rnpm" is a community project that allows linking of native dependencies automatically:
-Install rnpm
-```sh
-npm install rnpm -g
-```
-Note: rnpm requires node version 4.1 or higher
-
-### Step 3
 Link your native dependencies:
 ```sh
-rnpm link
+react-native link
 ```
 Done! All libraries with a native dependencies should be successfully linked to your iOS/Android project.
 
